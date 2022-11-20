@@ -1,6 +1,6 @@
 # docker-lamp
 
-Docker example with Apache, MySql 8.0, PhpMyAdmin and Php
+Docker example with Apache, MySql 8.0, netdata,PhpMyAdmin and PHP
 
 First, create the docker-compose file.
 
@@ -13,6 +13,8 @@ docker-compose up -d
 Open phpmyadmin at [http://localhost:8000].
 
 Open web browser to look at a php at [http://localhost:8001].
+
+Open netdata to monitor MySQL at [http://localhost:19999].
 
 Run mysql client:
 
