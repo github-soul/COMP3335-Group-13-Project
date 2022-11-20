@@ -19,3 +19,6 @@ Open netdata to monitor MySQL at [http://localhost:19999].
 Run mysql client:
 
 `docker-compose exec db mysql -u root -p` 
+
+Demo video:
+https://www.youtube.com/watch?v=kt4EPGzVhVY
