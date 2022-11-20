@@ -1,0 +1,68 @@
+version: "3.1"
+services:
+    www:
+        build: .
+        container_name: www
+        ports: 
+            - "8001:80"
+        volumes:
+            - ./www:/var/www/html/
+        depends_on:
+                - db
+    db:
+        image: mysql
+        container_name: db
+        command: --default-authentication-plugin=mysql_native_password
+        environment:
+            MYSQL_ROOT_PASSWORD: test 
+            MYSQL_DATABASE: myDb
+            MYSQL_USER: user
+            MYSQL_PASSWORD: test
+        ports: 
+            - "33306:3306"        
+        volumes:
+            - ./dump:/docker-entrypoint-initdb.d
+            - ./conf:/etc/mysql/conf.d
+            - persistent:/var/lib/mysql
+    phpmyadmin: #Add this container
+        image: phpmyadmin/phpmyadmin
+        container_name: phpmyadmin
+        ports:
+            - 8000:80
+        environment:
+            PMA_HOST: 'db'
+            PMA_PORT: '3306'
+            PMA_USER: 'root'
+            PMA_PASSWORD: "test"
+        depends_on:
+            - db
+
+
+
+    netdata:
+        image: netdata/netdata
+        container_name: netdata
+        hostname: example.com # set to fqdn of host
+        ports:
+        - 19999:19999
+        restart: unless-stopped
+        cap_add:
+        - SYS_PTRACE
+        security_opt:
+        - apparmor:unconfined
+        volumes:
+        - netdataconfig:/etc/netdata
+        - netdatalib:/var/lib/netdata
+        - netdatacache:/var/cache/netdata
+        - /etc/passwd:/host/etc/passwd:ro
+        - /etc/group:/host/etc/group:ro
+        - /proc:/host/proc:ro
+        - /sys:/host/sys:ro
+        - /etc/os-release:/host/etc/os-release:ro
+
+
+volumes:
+    persistent:
+    netdataconfig:
+    netdatalib:
+    netdatacache:
